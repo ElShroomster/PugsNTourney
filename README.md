@@ -1,1 +1,1 @@
-# PugsNTourney
+# Pugs and Tourney Bot
