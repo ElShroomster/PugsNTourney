@@ -488,4 +488,4 @@ async def on_reaction_remove(reaction, user):
     #                     json.dump(DataVote, wwr)
 
 
-bot.run("MTEzOTIzNzA4MjUxNTEyNDI1NQ.GYfZbR.OiJpTJA57O1nbJV2LK9HSyNMSSwutglA_U7Pw0")
+bot.run("key here")
