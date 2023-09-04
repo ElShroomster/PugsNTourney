@@ -1,25 +1,20 @@
-import discord
+import asyncio
 import os
-import time
-import requests
-import json
-import string
+
+import discord
+from cogs.tourney import *
 
 import discord.ext
-import asyncio
-import math
 import random
 from datetime import datetime
 import json
 
-import calendar
 import datetime
 from discord.ui import View, Button
-from discord.utils import get
-from discord.ext import commands, tasks
-from discord.ext.commands import has_permissions, CheckFailure, check
+from discord.ext import commands
 
 intents = discord.Intents.all()
+intents.presences = False
 
 bot = commands.Bot(command_prefix="-", intents=intents)
 # -- Constants
@@ -37,7 +32,9 @@ PUGS_TRIAL_ROLE = 1047032587631210496
 
 # -- Functions
 
-# ..Nothing here
+    # Commands
+commands_dir = './cogs'
+commands_dir_p = "cogs"
 
 # -- Commands
 @commands.has_role(PUGS_MANAGER_ROLE)
@@ -754,31 +751,7 @@ async def strikerequest(ctx, user: discord.Member, proof, reason=None):
             )
             await ctx.reply(embed=em2, ephemeral=True)
 
-
-@bot.event
-async def on_reaction_remove(reaction, user):
-    server = bot.get_guild(SERVER_ID)
-    PugsVoteChannel = server.get_channel(VOTE_CHANNEL_PUGS)
-    # if not user.bot:
-    #     with open("DataVote.json", "r") as rt:
-    #         DataVote = json.load(rt)
-    #     if (
-    #             reaction.message.channel.id == VOTE_CHANNEL_PUGS
-    #             and reaction.message.author.bot
-    #     ):
-    #         print("hasf")
-    #         for v in DataVote:
-    #             if int(DataVote[v].split(":")[5]) == reaction.message.id:
-    #                 if reaction.emoji == "✅":
-    #                     DataVote[v] = str(
-    #                         f"{(int(DataVote[v].split(':')[0]) - 1)}:{':'.join(DataVote[v].split(':')[1::])}"
-    #                     )
-    #                 elif reaction.emoji == "❌":
-    #                     DataVote[v] = str(
-    #                         f"{DataVote[v].split(':')[0]}:{(int(DataVote[v].split(':')[1]) - 1)}:{':'.join(DataVote[v].split(':')[2::])}"
-    #                     )
-    #                 with open("DataVote.json", "w") as wwr:
-    #                     json.dump(DataVote, wwr)
-
-
-bot.run("MTEzOTIzNzA4MjUxNTEyNDI1NQ.G5F_xK.o-KuBvMiOi-XcYnYAtE-F2tdKm5iUGQvugNrA4")
+asyncio.run(bot.load_extension('cogs.tourney'))
+bot.prefix = '-'
+with open('.key', 'r') as key:
+    bot.run(key.read())
