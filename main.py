@@ -28,8 +28,11 @@ STRIKE_REQUEST_CHANNEL = 1016363028649889922
 CONFIRM_STRIKE_CHANNEL = 1147884477847179316
 PUGS_ANNOUNCEMENTS = 1014281385906811031
 PUGS_TRIAL_ROLE = 1047032587631210496
-
-
+PREMIUM_MANAGER_ROLE = 1
+PREMIUM_ROLE = 1
+PREMIUM_INVITE = 1
+PUGS_SPEC = 1
+PREMIUM_ANNOUNCEMENTS = 1
 # -- Functions
 
     # Commands
@@ -77,6 +80,79 @@ async def pugstrial(ctx, setting: str, user: discord.Member):
 
         await ctx.send(content=user.mention, embed=Embed_Channel)
 
+@commands.has_any_role("[Manager] Premium")
+@bot.command(name="premiuminv", description="Give or remove Premium Invite from someone")
+async def premiuminv(ctx, setting: str, user: discord.Member):
+    server = bot.get_guild(SERVER_ID)
+    pugsannc = server.get_channel(PREMIUM_ANNOUNCEMENTS)
+    if setting.lower() == "add":
+        PremiumInviteRole = server.get_role(PREMIUM_INVITE)
+         
+        if not PremiumInviteRole in user.roles:
+            await user.add_roles(PremiumInviteRole)
+            Embed_Channel = discord.Embed(title="Ranked Bedwars Premium",
+                                          description=f"You have successfully given <@{user.id}> Prmeium Invite!",
+                                          color=0xe91e63)
+
+            await ctx.send(content=user.mention, embed=Embed_Channel)
+
+            Embed_PUGS = discord.Embed(title="Ranked Bedwars Premium",
+                                       description=f"Congratulations {user.mention} for receiving `Premium Invite`!",
+                                       color=0x992d22)
+            await pugsannc.send(content=user.mention, embed=Embed_PUGS)
+         
+    elif setting.lower() == "remove":
+         
+        PremiumInviteRole = server.get_role(PREMIUM_INVITE)
+        if PremiumInviteRole in user.roles:
+            await user.remove_roles(PremiumInviteRole)
+            Embed_Channel = discord.Embed(title="Ranked Bedwars Premium",
+                                          description=f"Succesfully removed Premium Invite from <@{user.id}>",
+                                          color=0xe91e63)
+
+            await ctx.send(content=user.mention, embed=Embed_Channel)
+    else:
+
+        Embed_Channel = discord.Embed(title="Ranked Bedwars",
+                                      description=f"Accepted Arguements: add | remove (usage: .premiuminv <add/remove> <user>)"
+                                      )
+
+        await ctx.send(content=user.mention, embed=Embed_Channel)
+@commands.has_any_role("[Manager] Pugs")
+@bot.command(name="pugspec", description="Give or remove Pugs spec from someone")
+async def pugspec(ctx, setting: str, user: discord.Member):
+    server = bot.get_guild(SERVER_ID)
+     
+    if setting.lower() == "add":
+        PugsSpec = server.get_role(PUGS_SPEC)
+         
+        if not PugsSpec in user.roles:
+            await user.add_roles(PugsSpec)
+            Embed_Channel = discord.Embed(title="Ranked Bedwars PUGs",
+                                          description=f"You have successfully given <@{user.id}> Pugs Spectator.",
+                                          color=0xe91e63)
+
+            await ctx.send(content=user.mention, embed=Embed_Channel)
+
+            
+         
+    elif setting.lower() == "remove":
+         
+        PugsSpec = server.get_role(PUGS_SPEC)
+        if PugsSpec in user.roles:
+            await user.remove_roles(PugsSpec)
+            Embed_Channel = discord.Embed(title="Ranked Bedwars PUGs",
+                                          description=f"Succesfully removed Pugs Spectator from <@{user.id}>",
+                                          color=0xe91e63)
+
+            await ctx.send(content=user.mention, embed=Embed_Channel)
+    else:
+
+        Embed_Channel = discord.Embed(title="Ranked Bedwars",
+                                      description=f"Accepted Arguements: add | remove (usage: .pugspec <add/remove> <user>)"
+                                      )
+
+        await ctx.send(content=user.mention, embed=Embed_Channel)
 
 @bot.command(name="pugsvote", description="Request a pugs vote", aliases=["pv", "vote"])
 async def pugsvote(ctx, query: str, user: discord.Member = None):
