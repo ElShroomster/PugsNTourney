@@ -40,11 +40,7 @@ commands_dir = './cogs'
 commands_dir_p = "cogs"
 
 # -- Commands
-@bot.event
-async def on_message(msg):
-    if msg.author.id != bot.user.id:
-        if msg.channel.id == 1147884477847179316 and 'str' in msg.content:
-            await msg.delete()
+
 @commands.has_role(PUGS_MANAGER_ROLE)
 @bot.command(name="pugstrial", description="Give or remove Pugs trial from someone")
 async def pugstrial(ctx, setting: str, user: discord.Member):
@@ -831,7 +827,12 @@ async def strikerequest(ctx, user: discord.Member, proof, reason=None):
                 color=discord.Color.from_rgb(255, 255, 255),
             )
             await ctx.reply(embed=em2, ephemeral=True)
-
+        
+@bot.event
+async def on_message(msg):
+    if msg.author.id != bot.user.id:
+        if msg.channel.id == 1147884477847179316 and 'str' in msg.content:
+            await msg.delete()
 asyncio.run(bot.load_extension('cogs.tourney'))
 bot.prefix = '-'
 with open('.key', 'r') as key:
