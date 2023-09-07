@@ -830,9 +830,12 @@ async def strikerequest(ctx, user: discord.Member, proof, reason=None):
         
 @bot.event
 async def on_message(msg):
-    if msg.author.id != bot.user.id:
+    if msg.channel.id != 1147884477847179316:
+        pass
+    elif msg.author.id != bot.user.id:
         if msg.channel.id == 1147884477847179316 and 'str' in msg.content:
             await msg.delete()
+    
 asyncio.run(bot.load_extension('cogs.tourney'))
 bot.prefix = '-'
 with open('.key', 'r') as key:
