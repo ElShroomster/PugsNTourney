@@ -40,6 +40,11 @@ commands_dir = './cogs'
 commands_dir_p = "cogs"
 
 # -- Commands
+@bot.event
+async def on_message(msg):
+    if msg.author.id != bot.user.id:
+        if msg.channel.id == 1147884477847179316 and 'str' in msg.content:
+            await msg.delete()
 @commands.has_role(PUGS_MANAGER_ROLE)
 @bot.command(name="pugstrial", description="Give or remove Pugs trial from someone")
 async def pugstrial(ctx, setting: str, user: discord.Member):
