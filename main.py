@@ -774,7 +774,8 @@ async def strikerequest(ctx, user: discord.Member, proof, reason=None):
                 description=f"Thank you for your report! it has been forwarded to our staff.",
                 color=discord.Color.from_rgb(255, 255, 255),
             )
-            await ctx.reply(embed=em2, ephemeral=True)
+            assd = await ctx.reply(embed=em2, ephemeral=True)
+            
             em3 = discord.Embed(
                 title="RBW Strikes",
                 description=f"Report Details\n> **Author**: {ctx.message.author.mention}\n> **User**: {user.mention}\n> **Reason**: {reason}\n> **Proof**: {proof}",
@@ -785,6 +786,8 @@ async def strikerequest(ctx, user: discord.Member, proof, reason=None):
             )
             await msgj.add_reaction("✅")
             await msgj.add_reaction("❌")
+            asyncio.sleep(2)
+            await assd.delete()
 
         else:
             em2 = discord.Embed(
@@ -792,7 +795,9 @@ async def strikerequest(ctx, user: discord.Member, proof, reason=None):
                 description=f"Please include a reason.",
                 color=discord.Color.from_rgb(255, 255, 255),
             )
-            await ctx.reply(embed=em2, ephemeral=True)
+            assd = await ctx.reply(embed=em2, ephemeral=True)
+            asyncio.sleep(2)
+            await assd.delete()
     else:
         if reason is None:
             if ctx.message.attachments:
@@ -801,7 +806,7 @@ async def strikerequest(ctx, user: discord.Member, proof, reason=None):
                     description=f"Thank you for your report! it has been forwarded to our staff.",
                     color=discord.Color.from_rgb(255, 255, 255),
                 )
-                await ctx.reply(embed=em2, ephemeral=True)
+                assd = await ctx.reply(embed=em2, ephemeral=True)
                 em3 = discord.Embed(
                     title="RBW Strikes",
                     description=f"Report Details\n> **Author**: {ctx.message.author.mention}\n> **User**: {user.mention}\n> **Reason**: {proof}\n> **Proof**: Shown below",
@@ -813,20 +818,27 @@ async def strikerequest(ctx, user: discord.Member, proof, reason=None):
                 )
                 await msgj.add_reaction("✅")
                 await msgj.add_reaction("❌")
+                asyncio.sleep(2)
+                await assd.delete()
             else:
                 em2 = discord.Embed(
                     title="RBW Strikes",
                     description=f"Please attach proof.",
                     color=discord.Color.from_rgb(255, 255, 255),
                 )
-                await ctx.reply(embed=em2, ephemeral=True)
+                assd = await ctx.reply(embed=em2, ephemeral=True)
+                asyncio.sleep(2)
+                await assd.delete()
         else:
             em2 = discord.Embed(
                 title="RBW Strikes",
                 description=f"Please include a valid url.",
                 color=discord.Color.from_rgb(255, 255, 255),
             )
-            await ctx.reply(embed=em2, ephemeral=True)
+            assd = await ctx.reply(embed=em2, ephemeral=True)
+            asyncio.sleep(2)
+            await assd.delete()
+
         
 @bot.event
 async def on_message(msg):
