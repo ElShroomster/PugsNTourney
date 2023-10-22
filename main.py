@@ -758,17 +758,48 @@ async def pugstourney(ctx, setting: str, id=None, memberSet: str = None):
     with open("DataTourney.json", "w") as hjgh:
         json.dump(DataTourney, hjgh)
 
-
+@bot.command(
+    name="checkvouch",
+    description="Check Vouches For a strike request",
+    aliases=["cv"]
+)
+async def checkvouch(ctx, user: discord.Member):
+    server = bot.get_guild(SERVER_ID)
+    StrikeConfirm = server.get_channel(CONFIRM_STRIKE_CHANNEL)
+    if user is not None:
+        try:
+            currMsg = None
+            content = StrikeConfirm.history(limit=50).flatten()
+            for i in content:
+                if user.id in i.content:
+                    currMsg = i
+                    break
+            ssData = currMsg.content.split(":")
+            if len(ssData) ==3:
+                channelStrike = server.get_channel(1016363028649889922)
+                msgVouch = await channelStrike.fetch_message(ssData[2])
+                reactionsVouch = await msgVouch.get_reactions()
+                CountVouch = None
+                try:
+                    
+                    for x in reactionsVouch:
+                        if str(x.emoji) ==str("🤚"):
+                            countVouch = x.count
+                except:
+                    await ctx.reply("Emoji not found")
+                await ctx.reply(f"Vouch count: {str(countVouch)}"
 @bot.command(
     name="strikerequest",
     description="Create a strike request",
     aliases=["sr", "srequest"],
 )
+
 async def strikerequest(ctx, user: discord.Member, proof, reason=None):
     server = bot.get_guild(SERVER_ID)
     StrikeConfirm = server.get_channel(CONFIRM_STRIKE_CHANNEL)
     if "https://" in proof:
         if reason is not None:
+            VouchMsg = await ctx.message.add_reaction("🤚")
             em2 = discord.Embed(
                 title="RBW Strikes",
                 description=f"Thank you for your report! it has been forwarded to our staff.",
@@ -782,10 +813,11 @@ async def strikerequest(ctx, user: discord.Member, proof, reason=None):
                 color=discord.Color.from_rgb(255, 255, 255),
             )
             msgj = await StrikeConfirm.send(
-                content=f"{ctx.message.author.id}:{user.id}", embed=em3
+                content=f"{ctx.message.author.id}:{user.id}:{VouchMsg.id}", embed=em3
             )
             await msgj.add_reaction("✅")
             await msgj.add_reaction("❌")
+            
             asyncio.sleep(2)
             await assd.delete()
 
@@ -846,7 +878,11 @@ async def on_message(msg):
         pass
     elif msg.author.id != bot.user.id:
         if msg.channel.id == 1147884477847179316 and 'str' in msg.content:
+            
             await msg.delete()
+            he = await msg.channel.send("Format: -sr [user] [reason] [proof]")
+            asyncio.sleep(3)
+            await he.delete()
     
 asyncio.run(bot.load_extension('cogs.tourney'))
 bot.prefix = '-'
